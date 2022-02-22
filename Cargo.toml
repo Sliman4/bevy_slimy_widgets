@@ -12,7 +12,7 @@ categories = ["game-development", "gui"]
 keywords = ["gamedev", "ui", "gui", "bevy"]
 
 [dependencies]
-bevy = { git = "https://github.com/bevyengine/bevy", rev = "5afda8d", default-features = false, features = [ "bevy_ui", "render" ] }
+bevy = { version = "0.6", default-features = false, features = [ "bevy_ui", "render" ] }
 
 [dev-dependencies]
-bevy = { git = "https://github.com/bevyengine/bevy", rev = "5afda8d" }
+bevy = "0.6"

@@ -14,4 +14,4 @@ and spawn UI node bundles from `bevy_simy_widgets`
 ### Compatibility table
 | Plugin Version | Bevy Version |
 |----------------|--------------|
-| `main`         | `main`       |
+| `main`         | `0.6`        |
