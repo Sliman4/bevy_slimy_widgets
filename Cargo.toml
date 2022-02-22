@@ -1,0 +1,18 @@
+[package]
+name = "bevy_slimy_widgets"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0 OR MIT"
+readme = "README.md"
+repository = "https://github.com/Sliman4/bevy_slimy_widgets"
+homepage = "https://github.com/Sliman4/bevy_slimy_widgets#readme"
+documentation = "https://docs.rs/bevy_slimy_widgets"
+description = "Cool bevy_ui widgets"
+categories = ["game-development", "gui"]
+keywords = ["gamedev", "ui", "gui", "bevy"]
+
+[dependencies]
+bevy = { git = "https://github.com/bevyengine/bevy", rev = "5afda8d", default-features = false, features = [ "bevy_ui" ] }
+
+[dev-dependencies]
+bevy = { git = "https://github.com/bevyengine/bevy", rev = "5afda8d" }
