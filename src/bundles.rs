@@ -1,16 +1,17 @@
-use crate::Progress;
+use crate::progress_bar::Progress;
 use bevy::prelude::*;
 use bevy::ui::FocusPolicy;
 
 /// A UI node that is a progress bar
 ///
 /// In order to work as expected, you must add the animation marker component
-/// to define how to display progress. Use built-in [`ProgressBarSizeAnimation`](crate::ProgressBarSizeAnimation)
+/// to define how to display progress. Use built-in [`ProgressBarSizeAnimation`](crate::progress_bar::ProgressBarSizeAnimation)
 /// or implement your own animation:
 ///
 /// ```rust
 /// # use bevy::prelude::*;
-/// # use bevy_slimy_widgets::{Progress, ProgressBarBundle};
+/// # use bevy_slimy_widgets::ProgressBarBundle;
+/// # use bevy_slimy_widgets::progress_bar::Progress;
 ///
 /// #[derive(Component)]
 /// struct MyProgressBarAnimation;
@@ -31,7 +32,7 @@ use bevy::ui::FocusPolicy;
 ///     for (progress, mut color) in query.iter_mut() {
 ///         // change hue from 0 to 100 (from red to green)
 ///         color.0 = Color::Hsla {
-///             hue: *progress,
+///             hue: **progress,
 ///             saturation: 0.7,
 ///             lightness: 0.5,
 ///             alpha: 1.0,
@@ -66,7 +67,7 @@ pub struct ProgressBarBundle {
 impl Default for ProgressBarBundle {
     fn default() -> Self {
         ProgressBarBundle {
-            progress: Progress::default(),
+            progress: Progress::empty(),
             interaction: Default::default(),
             focus_policy: Default::default(),
             node: Default::default(),

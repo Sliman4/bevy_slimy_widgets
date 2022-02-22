@@ -1,5 +1,5 @@
 #![cfg_attr(not(debug_assertions), deny(missing_docs))]
-#![deny(broken_intra_doc_links)]
+#![deny(rustdoc::broken_intra_doc_links)]
 #![doc = include_str!("../README.md")]
 
 use crate::widgets::progress_bar::progress_bar_size_animation_system;
@@ -28,6 +28,6 @@ impl Plugin for SlimyWidgetsPlugin {
 /// [cheatbook_system_order]: https://bevy-cheatbook.github.io/programming/system-order.html
 #[derive(SystemLabel, Clone, Hash, PartialEq, Eq, Debug)]
 pub enum SystemLabels {
-    /// [`ProgressBarBundle`]'s [`ProgressBarSizeAnimation`] animation system
+    /// [`ProgressBarBundle`]'s [`ProgressBarSizeAnimation`](crate::progress_bar::ProgressBarSizeAnimation) animation system
     ProgressBarSizeAnimation,
 }

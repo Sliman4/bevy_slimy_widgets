@@ -5,12 +5,12 @@ use std::ops::{AddAssign, Deref};
 
 /// Progress struct for ProgressBar.
 /// ```
-/// # use bevy::prelude::Progress;
-/// # use bevy_ui::Val;
+/// # use bevy_slimy_widgets::progress_bar::Progress;
+/// # use bevy::ui::Val;
 ///
 /// let mut progress_bar = Progress::new(25.0);
 ///
-/// *progress_bar += 50.0;
+/// progress_bar += 50.0;
 ///
 /// let progress_bar_width = Val::Percent(*progress_bar);
 /// ```
@@ -31,7 +31,7 @@ impl Deref for Progress {
 impl Progress {
     /// Creates a new instance of [`Progress`]
     /// ```
-    /// # use bevy::prelude::Progress;
+    /// # use bevy_slimy_widgets::progress_bar::Progress;
     ///
     /// // 100%
     /// let progress_bar = Progress::new(100.0);
@@ -42,10 +42,10 @@ impl Progress {
 
     /// Creates a new instance of [`Progress`] with 0% done
     /// ```
-    /// # use bevy::prelude::Progress;
+    /// # use bevy_slimy_widgets::progress_bar::Progress;
     ///
     /// let empty_progress_bar = Progress::empty();
-    /// assert!(*empty_progress_bar, 0.0);
+    /// assert_eq!(*empty_progress_bar, 0.0);
     /// ```
     pub fn empty() -> Self {
         Self::new(0.0)
@@ -58,13 +58,13 @@ impl Progress {
 
     /// Check if this [`Progress`] has reached 100%
     /// ```
-    /// # use bevy::prelude::Progress;
+    /// # use bevy_slimy_widgets::progress_bar::Progress;
     ///
     /// let mut progress_bar = Progress::new(50.0);
-    /// assert!(!empty_progress_bar.is_done());
+    /// assert!(!progress_bar.is_done());
     ///
-    /// *progress_bar += 50.0;
-    /// assert!(empty_progress_bar.is_done());
+    /// progress_bar += 50.0;
+    /// assert!(progress_bar.is_done());
     /// ```
     pub fn is_done(&self) -> bool {
         (self.0 - 100.0).abs() < f32::EPSILON
