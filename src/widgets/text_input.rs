@@ -62,13 +62,13 @@ impl TextInputConstrain for DefaultConstrains {
 
 /// Text that will be displayed when the input is empty
 #[derive(Default, Component, Clone, Debug)]
-pub struct PlaceholderText(Text);
+pub struct PlaceholderText(pub Text);
 /// Style of the input text
 #[derive(Default, Component, Clone, Debug)]
-pub struct InputTextStyle(TextStyle);
+pub struct InputTextStyle(pub TextStyle);
 /// Alignment of the input text
 #[derive(Default, Component, Clone, Debug)]
-pub struct InputTextAlignment(TextAlignment);
+pub struct InputTextAlignment(pub TextAlignment);
 
 impl From<Text> for PlaceholderText {
     fn from(inner: Text) -> Self {
@@ -90,13 +90,13 @@ impl From<TextAlignment> for InputTextAlignment {
 
 /// If the text input is focused, it will hold cursor index
 #[derive(Component, Default, Debug, Clone)]
-pub struct TextInputFocus(Option<usize>);
+pub struct TextInputFocus(pub Option<usize>);
 
 /// A blinking thing that appears when you focus on a text input.
 /// A bundle that will be spawned with [`TextCursor`] component.
 /// Added as a component to `TextInputBundle`
 #[derive(Component, Clone, Debug)]
-pub struct TextCursorStyle(NodeBundle);
+pub struct TextCursorStyle(pub NodeBundle);
 
 impl TextCursorStyle {
     /// The default blinking cursor. Params should with input's params
