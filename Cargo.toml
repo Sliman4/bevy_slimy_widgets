@@ -13,6 +13,17 @@ keywords = ["gamedev", "ui", "gui", "bevy"]
 
 [dependencies]
 bevy = { version = "0.6", default-features = false, features = [ "bevy_ui", "render" ] }
+clipboard = "0.5.0"
+ab_glyph = "0.2.15"
+glyph_brush = "0.7.3"
 
 [dev-dependencies]
 bevy = "0.6"
+
+[[example]]
+name = "progress_bar"
+path = "examples/progress_bar.rs"
+
+[[example]]
+name = "text_input"
+path = "examples/text_input.rs"

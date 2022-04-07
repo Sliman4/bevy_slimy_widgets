@@ -1,6 +1,11 @@
-use crate::progress_bar::Progress;
 use bevy::prelude::*;
 use bevy::ui::FocusPolicy;
+
+use crate::progress_bar::Progress;
+use crate::text_input::{
+    CursorBlinkingInterval, DefaultConstrains, InputTextAlignment, InputTextStyle, PlaceholderText,
+    TextCursorStyle, TextInputConstrains, TextInputFocus, TextInputValue,
+};
 
 /// A UI node that is a progress bar
 ///
@@ -48,8 +53,6 @@ pub struct ProgressBarBundle {
     pub progress: Progress,
     /// Describes the style including flexbox settings
     pub style: Style,
-    /// Describes whether and how the button has been interacted with by the input
-    pub interaction: Interaction,
     /// Whether this node should block interaction with lower nodes
     pub focus_policy: FocusPolicy,
     /// The color of the node
@@ -68,7 +71,6 @@ impl Default for ProgressBarBundle {
     fn default() -> Self {
         ProgressBarBundle {
             progress: Progress::empty(),
-            interaction: Default::default(),
             focus_policy: Default::default(),
             node: Default::default(),
             style: Default::default(),
@@ -77,6 +79,79 @@ impl Default for ProgressBarBundle {
             transform: Default::default(),
             global_transform: Default::default(),
             visibility: Default::default(),
+        }
+    }
+}
+
+/// A text input field. It has a child with [`TextCursor`] component
+/// when focused, and is focused on click.
+#[derive(Bundle)]
+pub struct TextInputBundle {
+    /// Describes the size of the node
+    pub node: Node,
+    /// Describes the style including flexbox settings
+    pub style: Style,
+    /// Describes whether and how the text field has been interacted with by the input
+    pub interaction: Interaction,
+    /// Whether this node should block interaction with lower nodes
+    pub focus_policy: FocusPolicy,
+    /// The color of the node
+    pub color: UiColor,
+    /// The image of the node
+    pub image: UiImage,
+    /// The transform of the node
+    pub transform: Transform,
+    /// The global transform of the node
+    pub global_transform: GlobalTransform,
+    /// Describes the visibility properties of the node
+    pub visibility: Visibility,
+    /// Text that will be displayed when the input is empty
+    pub placeholder: PlaceholderText,
+    /// Style of the input text
+    pub text_style: InputTextStyle,
+    /// Alignment of the input text
+    pub text_alignment: InputTextAlignment,
+    /// The character won't be added to the input if any of these returns false
+    pub constrains: TextInputConstrains,
+    /// Whether the text input is focused or not.
+    /// If the text input is focused, it will hold cursor index
+    pub focus: TextInputFocus,
+    /// A blinking thing that appears when you focus on a text input.
+    /// A bundle that will be spawned with [`TextCursor`] component
+    pub cursor: TextCursorStyle,
+    /// Text field's value, text that is typed in here
+    pub value: TextInputValue,
+    /// Text cursor blinking interval. Default is 750ms
+    pub cursor_blinking_interval: CursorBlinkingInterval,
+}
+
+impl Default for TextInputBundle {
+    fn default() -> Self {
+        Self {
+            node: Default::default(),
+            style: Default::default(),
+            interaction: Default::default(),
+            focus_policy: Default::default(),
+            color: Default::default(),
+            image: Default::default(),
+            transform: Default::default(),
+            global_transform: Default::default(),
+            visibility: Default::default(),
+            placeholder: Default::default(),
+            text_style: Default::default(),
+            text_alignment: Default::default(),
+            constrains: TextInputConstrains(vec![Box::new(
+                DefaultConstrains::DisallowedCharacters(vec!['\n']),
+            )]),
+            focus: Default::default(),
+            cursor: TextCursorStyle::default(
+                TextStyle::default().font_size,
+                TextStyle::default().color.into(),
+                Default::default(),
+                Default::default(),
+            ),
+            value: Default::default(),
+            cursor_blinking_interval: Default::default(),
         }
     }
 }

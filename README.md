@@ -11,6 +11,14 @@ and spawn UI node bundles from `bevy_simy_widgets`
 [Example](examples/progress_bar.rs)
 ![Progress bar example](images/progress_bar_example.png)
 
+#### Text input
+Note:
+- Text wrapping is not implemented. (it should be implemented in bevy, not in a 3rd party plugin)
+- Tabs (\t) don't work in bevy.
+
+[Example](examples/text_input.rs)
+![Progress bar example](images/text_input_example.png)
+
 ### Compatibility table
 | Plugin Version | Bevy Version |
 |----------------|--------------|

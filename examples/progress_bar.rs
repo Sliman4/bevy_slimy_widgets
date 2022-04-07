@@ -1,8 +1,9 @@
+//! This example illustrates how to create a progress that changes based on arbitrary data.
+//! In this example we use buttons to add progress, but you probably want something else,
+//! e.g. assets loading, connection to a server.
+
 use bevy::prelude::*;
 
-/// This example illustrates how to create a progress that changes based on arbitrary data.
-/// In this example we use buttons to add progress, but you probably want something else,
-/// e.g. assets loading, connection to a server.
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
