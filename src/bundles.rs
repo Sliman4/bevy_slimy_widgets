@@ -4,7 +4,7 @@ use bevy::ui::FocusPolicy;
 use crate::progress_bar::Progress;
 use crate::text_input::{
     CursorBlinkingInterval, DefaultConstrains, InputTextAlignment, InputTextStyle, PlaceholderText,
-    TextCursorStyle, TextInputConstrains, TextInputFocus, TextInputValue,
+    TextCursorStyle, TextInputConstrains, TextInputFocus, TextInputTargetSize, TextInputValue,
 };
 
 /// A UI node that is a progress bar
@@ -123,6 +123,8 @@ pub struct TextInputBundle {
     pub value: TextInputValue,
     /// Text cursor blinking interval. Default is 750ms
     pub cursor_blinking_interval: CursorBlinkingInterval,
+    /// If present, it will decrease font size to fit into target size
+    pub target_size: TextInputTargetSize,
 }
 
 impl Default for TextInputBundle {
@@ -152,6 +154,7 @@ impl Default for TextInputBundle {
             ),
             value: Default::default(),
             cursor_blinking_interval: Default::default(),
+            target_size: Default::default(),
         }
     }
 }

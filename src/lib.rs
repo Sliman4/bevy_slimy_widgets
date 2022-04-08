@@ -10,8 +10,8 @@ pub use widgets::*;
 
 use crate::text_input::{
     text_input_blink_cursor_system, text_input_create_system, text_input_focus_on_click_system,
-    text_input_move_cursor_system, text_input_system, text_input_unfocus_system,
-    text_input_update_system,
+    text_input_font_decrease_system, text_input_move_cursor_system, text_input_system,
+    text_input_unfocus_system, text_input_update_system,
 };
 use crate::widgets::progress_bar::progress_bar_size_animation_system;
 
@@ -32,7 +32,11 @@ impl Plugin for SlimyWidgetsPlugin {
                 .before(SystemLabels::TextInputFocusOnClick),
         )
         .add_system(text_input_focus_on_click_system.label(SystemLabels::TextInputFocusOnClick))
-        .add_system(text_input_move_cursor_system.label(SystemLabels::TextInputMoveCursor))
+        .add_system(
+            text_input_move_cursor_system
+                .label(SystemLabels::TextInputMoveCursor)
+                .after(SystemLabels::TextInputFontDecrease),
+        )
         .add_system(text_input_blink_cursor_system.label(SystemLabels::TextInputBlinkCursor))
         .add_system(text_input_create_system.label(SystemLabels::TextInputCreate))
         .add_system(
@@ -44,6 +48,12 @@ impl Plugin for SlimyWidgetsPlugin {
             text_input_system
                 .label(SystemLabels::TextInput)
                 .before(SystemLabels::TextInputBlinkCursor),
+        )
+        .add_system(
+            text_input_font_decrease_system
+                .label(SystemLabels::TextInputFontDecrease)
+                .before(SystemLabels::TextInputUpdate)
+                .after(SystemLabels::TextInput),
         );
     }
 }
@@ -70,4 +80,6 @@ pub enum SystemLabels {
     TextInputUpdate,
     /// Handle keyboard input
     TextInput,
+    /// Decrease [`TextInputBundle`]'s font size based on text length and [`TextInputTargetSize`](widgets::text_input::TextInputTargetSize)
+    TextInputFontDecrease,
 }

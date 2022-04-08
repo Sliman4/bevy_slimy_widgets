@@ -88,6 +88,10 @@ impl From<TextAlignment> for InputTextAlignment {
     }
 }
 
+/// If present, it will decrease font size to fit into target size
+#[derive(Component, Default, Copy, Clone)]
+pub struct TextInputTargetSize(pub Option<Size>);
+
 /// If the text input is focused, it will hold cursor index
 #[derive(Component, Default, Debug, Clone)]
 pub struct TextInputFocus(pub Option<usize>);
@@ -181,23 +185,32 @@ pub fn text_input_move_cursor_system(
         (
             Entity,
             &TextInputFocus,
-            &InputTextStyle,
             &TextInputValue,
             &TextCursorStyle,
             &CursorBlinkingInterval,
         ),
         Changed<TextInputFocus>,
     >,
+    query_text: Query<(&Parent, &Text), With<TextInputInner>>,
     mut query_cursors: Query<(Entity, &mut Style, &Parent), With<TextCursor>>,
 ) {
-    'text: for (entity, focus, text_style, value, cursor_style, cursor_interval) in query.iter() {
+    'text: for (entity, focus, value, cursor_style, cursor_interval) in query.iter() {
         if let Some(char_index) = focus.0 {
             for (_, mut style, parent) in query_cursors.iter_mut() {
                 if parent.0 == entity {
-                    let font = fonts.get(text_style.0.font.clone()).unwrap().font.clone();
+                    let text = query_text
+                        .iter()
+                        .find(|(parent, _)| parent.0 == entity)
+                        .unwrap()
+                        .1;
+                    let font = fonts
+                        .get(text.sections[0].style.font.clone())
+                        .unwrap()
+                        .font
+                        .clone();
 
                     let text_before_cursor = &value.0[..char_index];
-                    let font_size = text_style.0.font_size;
+                    let font_size = text.sections[0].style.font_size;
                     let scale = PxScale {
                         x: font_size,
                         y: font_size,
@@ -503,6 +516,47 @@ pub fn text_input_system(
                         timer.0.reset();
                         break;
                     }
+                }
+            }
+        }
+    }
+}
+
+pub fn text_input_font_decrease_system(
+    fonts: Res<Assets<Font>>,
+    query: Query<(
+        Entity,
+        &InputTextStyle,
+        &TextInputTargetSize,
+        &TextInputValue,
+    )>,
+    mut text: Query<(&Parent, &mut Text), With<TextInputInner>>,
+) {
+    for (entity, style, target_size, value) in query.iter() {
+        if let Some(target_size) = target_size.0 {
+            for mut text in text
+                .iter_mut()
+                .filter(|(parent, _)| parent.0 == entity)
+                .map(|(_, text)| text)
+            {
+                let font = fonts
+                    .get(text.sections[0].style.font.clone())
+                    .unwrap()
+                    .font
+                    .clone();
+                let scale = PxScale {
+                    x: style.0.font_size,
+                    y: style.0.font_size,
+                };
+
+                let width = text_width(&value.0, font.clone(), scale);
+                let height = value.0.lines().count() as f32 * font.as_scaled(scale).height();
+
+                let width_factor = width / target_size.width;
+                let height_factor = height / target_size.height;
+                let factor = width_factor.max(height_factor);
+                if factor > 1.0 {
+                    text.sections[0].style.font_size = style.0.font_size / factor;
                 }
             }
         }
