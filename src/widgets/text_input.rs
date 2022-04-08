@@ -298,6 +298,7 @@ pub fn text_input_create_system(
             parent
                 .spawn_bundle(TextBundle {
                     style: Style {
+                        size: Size::new(Val::Percent(100.0), Val::Percent(100.0)),
                         position_type: PositionType::Absolute,
                         ..Default::default()
                     },
@@ -312,6 +313,7 @@ pub fn text_input_create_system(
             parent
                 .spawn_bundle(TextBundle {
                     style: Style {
+                        size: Size::new(Val::Percent(100.0), Val::Percent(100.0)),
                         position_type: PositionType::Absolute,
                         ..Default::default()
                     },
@@ -329,20 +331,20 @@ pub fn text_input_update_system(
     mut value_query: Query<(&Parent, &mut Text), With<TextInputInner>>,
 ) {
     for (entity, value) in query.iter() {
-        let mut placeholder_visibility = placeholder_query
+        if let Some((_, mut placeholder_visibility)) = placeholder_query
             .iter_mut()
             .find(|(parent, _)| parent.0 == entity)
-            .unwrap()
-            .1;
-        let mut inner_text = value_query
-            .iter_mut()
-            .find(|(parent, _)| parent.0 == entity)
-            .unwrap()
-            .1;
-        placeholder_visibility.is_visible = value.is_empty();
-        inner_text.sections[0].value = value.0.clone();
-        if inner_text.sections[0].value.ends_with('\n') {
-            inner_text.sections[0].value.push(' ');
+        {
+            let mut inner_text = value_query
+                .iter_mut()
+                .find(|(parent, _)| parent.0 == entity)
+                .unwrap()
+                .1;
+            placeholder_visibility.is_visible = value.is_empty();
+            inner_text.sections[0].value = value.0.clone();
+            if inner_text.sections[0].value.ends_with('\n') {
+                inner_text.sections[0].value.push(' ');
+            }
         }
     }
 }

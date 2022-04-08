@@ -26,13 +26,25 @@ impl Plugin for SlimyWidgetsPlugin {
         app.add_system(
             progress_bar_size_animation_system.label(SystemLabels::ProgressBarSizeAnimation),
         )
-        .add_system(text_input_unfocus_system.before(SystemLabels::TextInputFocusOnClick))
+        .add_system(
+            text_input_unfocus_system
+                .label(SystemLabels::TextInputUnfocus)
+                .before(SystemLabels::TextInputFocusOnClick),
+        )
         .add_system(text_input_focus_on_click_system.label(SystemLabels::TextInputFocusOnClick))
         .add_system(text_input_move_cursor_system.label(SystemLabels::TextInputMoveCursor))
         .add_system(text_input_blink_cursor_system.label(SystemLabels::TextInputBlinkCursor))
-        .add_system(text_input_create_system)
-        .add_system_to_stage(CoreStage::PostUpdate, text_input_update_system)
-        .add_system(text_input_system.before(SystemLabels::TextInputBlinkCursor));
+        .add_system(text_input_create_system.label(SystemLabels::TextInputCreate))
+        .add_system(
+            text_input_update_system
+                .label(SystemLabels::TextInputUpdate)
+                .after(SystemLabels::TextInputCreate),
+        )
+        .add_system(
+            text_input_system
+                .label(SystemLabels::TextInput)
+                .before(SystemLabels::TextInputBlinkCursor),
+        );
     }
 }
 
@@ -50,4 +62,12 @@ pub enum SystemLabels {
     TextInputMoveCursor,
     /// [`TextInputBundle`]'s cursor blinking
     TextInputBlinkCursor,
+    /// Unfocus all [`TextInputBundle`]s on click
+    TextInputUnfocus,
+    /// Create placeholder and inner text value when [`TextInputBundle`] is creatd
+    TextInputCreate,
+    /// Update [`TextInputBundle`]'s inner value
+    TextInputUpdate,
+    /// Handle keyboard input
+    TextInput,
 }
