@@ -22,4 +22,4 @@ Note:
 ### Compatibility table
 | Plugin Version | Bevy Version |
 |----------------|--------------|
-| `main`         | `0.6`        |
+| `main`         | `0.7`        |

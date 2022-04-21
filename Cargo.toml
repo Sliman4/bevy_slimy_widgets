@@ -18,7 +18,7 @@ ab_glyph = "0.2.15"
 glyph_brush = "0.7.3"
 
 [dev-dependencies]
-bevy = "0.6"
+bevy = "0.7"
 
 [[example]]
 name = "progress_bar"
