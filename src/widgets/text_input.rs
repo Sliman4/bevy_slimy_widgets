@@ -2,22 +2,16 @@ use std::ops::Deref;
 use std::time::Duration;
 
 use ab_glyph::{Font as AbGlyphFont, FontArc, Glyph, PxScale, ScaleFont};
-use bevy::app::EventReader;
 use bevy::asset::Assets;
 use bevy::core::{Time, Timer};
 use bevy::ecs::component::Component;
 use bevy::input::keyboard::KeyboardInput;
 use bevy::input::{ElementState, Input};
-use bevy::prelude::{
-    Added, BuildChildren, Changed, DespawnRecursiveExt, Entity, KeyCode, NodeBundle, Parent, Query,
-    ReceivedCharacter, Rect, Res, Size, TextBundle, Visibility, With,
-};
+use bevy::prelude::*;
 use bevy::text::{Font, HorizontalAlign, Text, TextAlignment, TextStyle, VerticalAlign};
 use bevy::ui::{Interaction, Style, UiColor};
 use clipboard::{ClipboardContext, ClipboardProvider};
 use glyph_brush::{GlyphCalculatorBuilder, GlyphCruncher, Section};
-
-use crate::{Commands, MouseButton, PositionType, Val};
 
 /// A list of [`TextInputConstrain`]s. The character won't be added to the
 /// input if any of these returns false
