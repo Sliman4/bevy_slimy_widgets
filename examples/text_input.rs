@@ -14,8 +14,6 @@ fn main() {
 }
 
 fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
-    commands.spawn_bundle(UiCameraBundle::default());
-
     // root node
     commands
         .spawn_bundle(NodeBundle {
@@ -31,22 +29,22 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
             parent.spawn_bundle(TextInputBundle {
                 style: Style {
                     size: Size::new(Val::Px(400.0), Val::Px(30.0)),
-                    margin: Rect::all(Val::Auto),
-                    border: Rect::all(Val::Px(5.0)),
+                    margin: UiRect::all(Val::Auto),
+                    border: UiRect::all(Val::Px(5.0)),
                     ..Default::default()
                 },
-                placeholder: Text::with_section(
+                placeholder: Text::from_section(
                     "Enter text...",
                     TextStyle {
                         font: asset_server.load("fonts/FiraSans-Bold.ttf"),
                         font_size: 24.0,
                         color: Color::GRAY,
                     },
-                    TextAlignment {
-                        vertical: VerticalAlign::Center,
-                        horizontal: HorizontalAlign::Left,
-                    },
                 )
+                .with_alignment(TextAlignment {
+                    vertical: VerticalAlign::Center,
+                    horizontal: HorizontalAlign::Left,
+                })
                 .into(),
                 text_style: TextStyle {
                     font: asset_server.load("fonts/FiraSans-Bold.ttf"),
@@ -67,7 +65,7 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
                 cursor: TextCursorStyle::default(
                     24.0,
                     Color::WHITE.into(),
-                    Rect::all(Val::Undefined),
+                    UiRect::all(Val::Undefined),
                     TextAlignment {
                         vertical: VerticalAlign::Top,
                         horizontal: HorizontalAlign::Left,
@@ -80,22 +78,22 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
             parent.spawn_bundle(TextInputBundle {
                 style: Style {
                     size: Size::new(Val::Px(400.0), Val::Px(400.0)),
-                    margin: Rect::all(Val::Auto),
-                    border: Rect::all(Val::Px(5.0)),
+                    margin: UiRect::all(Val::Auto),
+                    border: UiRect::all(Val::Px(5.0)),
                     ..Default::default()
                 },
-                placeholder: Text::with_section(
+                placeholder: Text::from_section(
                     "Enter more text...",
                     TextStyle {
                         font: asset_server.load("fonts/FiraSans-Bold.ttf"),
                         font_size: 16.0,
                         color: Color::GRAY,
                     },
-                    TextAlignment {
-                        vertical: VerticalAlign::Top,
-                        horizontal: HorizontalAlign::Left,
-                    },
                 )
+                .with_alignment(TextAlignment {
+                    vertical: VerticalAlign::Top,
+                    horizontal: HorizontalAlign::Left,
+                })
                 .into(),
                 text_style: TextStyle {
                     font: asset_server.load("fonts/FiraSans-Bold.ttf"),
@@ -113,7 +111,7 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
                 cursor: TextCursorStyle::default(
                     16.0,
                     Color::WHITE.into(),
-                    Rect::all(Val::Undefined),
+                    UiRect::all(Val::Undefined),
                     TextAlignment {
                         vertical: VerticalAlign::Bottom,
                         horizontal: HorizontalAlign::Left,

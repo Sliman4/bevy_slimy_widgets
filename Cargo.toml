@@ -12,13 +12,13 @@ categories = ["game-development", "gui"]
 keywords = ["gamedev", "ui", "gui", "bevy"]
 
 [dependencies]
-bevy = { version = "0.7", default-features = false, features = [ "bevy_ui", "render" ] }
+bevy = { version = "0.8", default-features = false, features = [ "bevy_ui", "render" ] }
 clipboard = "0.5.0"
 ab_glyph = "0.2.15"
 glyph_brush = "0.7.3"
 
 [dev-dependencies]
-bevy = "0.7"
+bevy = "0.8"
 
 [[example]]
 name = "progress_bar"

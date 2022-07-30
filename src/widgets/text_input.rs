@@ -2,14 +2,10 @@ use std::ops::Deref;
 use std::time::Duration;
 
 use ab_glyph::{Font as AbGlyphFont, FontArc, Glyph, PxScale, ScaleFont};
-use bevy::asset::Assets;
-use bevy::core::{Time, Timer};
-use bevy::ecs::component::Component;
 use bevy::input::keyboard::KeyboardInput;
-use bevy::input::{ElementState, Input};
+use bevy::input::ButtonState;
 use bevy::prelude::*;
 use bevy::text::{Font, HorizontalAlign, Text, TextAlignment, TextStyle, VerticalAlign};
-use bevy::ui::{Interaction, Style, UiColor};
 use clipboard::{ClipboardContext, ClipboardProvider};
 use glyph_brush::{GlyphCalculatorBuilder, GlyphCruncher, Section};
 
@@ -101,13 +97,13 @@ impl TextCursorStyle {
     pub fn default(
         font_size: f32,
         color: UiColor,
-        padding: Rect<Val>,
+        padding: UiRect<Val>,
         alignment: TextAlignment,
     ) -> Self {
         Self(NodeBundle {
             style: Style {
                 size: Size::new(Val::Px(font_size / 12.0), Val::Px(font_size)),
-                margin: Rect {
+                margin: UiRect {
                     left: if alignment.horizontal == HorizontalAlign::Left {
                         padding.left
                     } else {
@@ -191,14 +187,14 @@ pub fn text_input_move_cursor_system(
     'text: for (entity, focus, value, cursor_style, cursor_interval) in query.iter() {
         if let Some(char_index) = focus.0 {
             for (_, mut style, parent) in query_cursors.iter_mut() {
-                if parent.0 == entity {
+                if parent.get() == entity {
                     let text = query_text
                         .iter()
-                        .find(|(parent, _)| parent.0 == entity)
+                        .find(|(parent, _)| parent.get() == entity)
                         .unwrap()
                         .1;
                     let font = fonts
-                        .get(text.sections[0].style.font.clone())
+                        .get(&text.sections[0].style.font)
                         .unwrap()
                         .font
                         .clone();
@@ -251,7 +247,7 @@ pub fn text_input_move_cursor_system(
             });
         } else {
             for (cursor, _, parent) in query_cursors.iter_mut() {
-                if parent.0 == entity {
+                if parent.get() == entity {
                     commands.entity(cursor).despawn_recursive();
                 }
             }
@@ -324,7 +320,7 @@ pub fn text_input_create_system(
                         position_type: PositionType::Absolute,
                         ..Default::default()
                     },
-                    text: Text::with_section(&value.0, style.0.clone(), alignment.0),
+                    text: Text::from_section(&value.0, style.0.clone()).with_alignment(alignment.0),
                     ..Default::default()
                 })
                 .insert(TextInputInner);
@@ -340,11 +336,11 @@ pub fn text_input_update_system(
     for (entity, value) in query.iter() {
         if let Some((_, mut placeholder_visibility)) = placeholder_query
             .iter_mut()
-            .find(|(parent, _)| parent.0 == entity)
+            .find(|(parent, _)| parent.get() == entity)
         {
             let mut inner_text = value_query
                 .iter_mut()
-                .find(|(parent, _)| parent.0 == entity)
+                .find(|(parent, _)| parent.get() == entity)
                 .unwrap()
                 .1;
             placeholder_visibility.is_visible = value.is_empty();
@@ -371,7 +367,7 @@ pub fn text_input_system(
 ) {
     let keys = input
         .iter()
-        .filter(|key| key.state == ElementState::Pressed)
+        .filter(|key| key.state == ButtonState::Pressed)
         .filter_map(|key| key.key_code)
         .collect::<Vec<_>>();
     let chars_all = char_evr.iter().map(|rc| rc.char).collect::<Vec<_>>();
@@ -387,7 +383,7 @@ pub fn text_input_system(
         .collect::<Vec<_>>();
     for (entity, style, mut value, mut focus, constrains) in query.iter_mut() {
         if let Some(cursor) = focus.0.as_mut() {
-            let font = fonts.get(style.0.font.clone()).unwrap().font.clone();
+            let font = fonts.get(&style.0.font).unwrap().font.clone();
             let mut new_value = value.0.clone();
             let mut new_cursor = *cursor;
             if control_chars.contains(&'\r') {
@@ -505,7 +501,7 @@ pub fn text_input_system(
                 value.0 = new_value;
                 *cursor = new_cursor;
                 for (parent, mut visibility, mut timer) in cursors.iter_mut() {
-                    if parent.0 == entity {
+                    if parent.get() == entity {
                         visibility.is_visible = true;
                         timer.0.reset();
                         break;
@@ -530,11 +526,11 @@ pub fn text_input_font_decrease_system(
         if let Some(target_size) = target_size.0 {
             for mut text in text
                 .iter_mut()
-                .filter(|(parent, _)| parent.0 == entity)
+                .filter(|(parent, _)| parent.get() == entity)
                 .map(|(_, text)| text)
             {
                 let font = fonts
-                    .get(text.sections[0].style.font.clone())
+                    .get(&text.sections[0].style.font)
                     .unwrap()
                     .font
                     .clone();

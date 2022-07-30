@@ -56,16 +56,13 @@ fn button_system(
 }
 
 fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
-    // ui camera
-    commands.spawn_bundle(UiCameraBundle::default());
-
     // root node
     commands
         .spawn_bundle(NodeBundle {
             style: Style {
                 size: Size::new(Val::Px(300.0), Val::Px(200.0)),
                 // center it
-                margin: Rect::all(Val::Auto),
+                margin: UiRect::all(Val::Auto),
                 // progress bar should be above the button
                 flex_direction: FlexDirection::ColumnReverse,
                 ..Default::default()
@@ -81,9 +78,9 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
                     style: Style {
                         size: Size::new(Val::Px(270.0), Val::Px(50.0)),
                         // center progress bar
-                        margin: Rect::all(Val::Auto),
+                        margin: UiRect::all(Val::Auto),
                         // add a black border
-                        border: Rect::all(Val::Px(7.0)),
+                        border: UiRect::all(Val::Px(7.0)),
                         ..Default::default()
                     },
                     color: Color::BLACK.into(),
@@ -121,7 +118,7 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
                     style: Style {
                         size: Size::new(Val::Px(150.0), Val::Px(65.0)),
                         // center button
-                        margin: Rect::all(Val::Auto),
+                        margin: UiRect::all(Val::Auto),
                         // horizontally center child text
                         justify_content: JustifyContent::Center,
                         // vertically center child text
@@ -133,14 +130,13 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
                 })
                 .with_children(|parent| {
                     parent.spawn_bundle(TextBundle {
-                        text: Text::with_section(
+                        text: Text::from_section(
                             "Add 5%",
                             TextStyle {
                                 font: asset_server.load("fonts/FiraSans-Bold.ttf"),
                                 font_size: 40.0,
                                 color: Color::rgb(0.9, 0.9, 0.9),
                             },
-                            Default::default(),
                         ),
                         ..Default::default()
                     });
