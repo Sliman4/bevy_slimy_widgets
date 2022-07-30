@@ -2,7 +2,7 @@
 It's a collection of bevy_ui widgets.
 
 ## Usage
-Simply add [`SlimyWidgetsPlugin`](https://docs.rs/bevy_slinet/latest/bevy_slimy_widgets/struct.SlimyWidgetsPlugin.html)
+Simply add [`SlimyWidgetsPlugin`](https://docs.rs/bevy_slimy_widgets/latest/bevy_slimy_widgets/struct.SlimyWidgetsPlugin.html)
 with [`App::add_plugin()`](https://docs.rs/bevy/latest/bevy/app/struct.App.html#method.add_plugin)
 and spawn UI node bundles from `bevy_slimy_widgets`
 
@@ -22,4 +22,4 @@ Note:
 ### Compatibility table
 | Plugin Version | Bevy Version |
 |----------------|--------------|
-| `main`         | `0.7`        |
+| `main`         | `0.8`        |
